@@ -1,6 +1,6 @@
 ---
-title: "Мой первый пост"
+title: "Fisrt post"
 date: 2026-02-09
 ---
 
-Привет! Это первый пост
+Hi! This is my first post.

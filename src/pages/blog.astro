@@ -1,0 +1,50 @@
+---
+import fs from 'fs';
+import path from 'path';
+import { marked } from 'marked';
+
+const blogDir = path.resolve('./src/content/blog');
+const files = fs.readdirSync(blogDir);
+
+const posts = files.map(file => {
+  const filePath = path.join(blogDir, file);
+  const content = fs.readFileSync(filePath, 'utf-8');
+
+  const match = content.match(/---\n([\s\S]+?)\n---\n([\s\S]*)/);
+  if (!match) return null;
+
+  const frontmatter = match[1];
+  const body = match[2];
+
+  const fm = {};
+  frontmatter.split('\n').forEach(line => {
+    const [key, ...rest] = line.split(':');
+    fm[key.trim()] = rest.join(':').trim();
+  });
+
+  return {
+    title: fm.title,
+    date: fm.date,
+    body: marked(body)
+  };
+}).filter(Boolean);
+
+posts.sort((a, b) => new Date(b.date) - new Date(a.date));
+---
+
+<html>
+  <head>
+    <title>Блог</title>
+  </head>
+  <body>
+    <h1>Блог</h1>
+    {posts.map(post => (
+      <article>
+        <h2>{post.title}</h2>
+        <p><em>{post.date}</em></p>
+        <div innerHTML={post.body}></div>
+        <hr />
+      </article>
+    ))}
+  </body>
+</html>
