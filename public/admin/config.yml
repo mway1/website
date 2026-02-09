@@ -2,7 +2,9 @@ backend:
   name: github
   repo: "mway1/website"
   branch: "main"
-  open_authoring: false
+  auth_scope: "repo"
+  client_id: "${GITHUB_CLIENT_ID}"
+  client_secret: "${GITHUB_CLIENT_SECRET}"
 
 media_folder: "public/uploads"
 public_folder: "/uploads"
